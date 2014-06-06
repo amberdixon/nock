@@ -1718,6 +1718,20 @@ test('different ports work work with Mikeal request', function(t) {
   });
 });
 
+test("mocking Mikael request failures", function(t) {
+
+  var scope = nock('http://www.requestfailure.com')
+    .get('/')
+    .failRequest();
+
+  mikealRequest.get('http://www.requestfailure.com', function(err, res, body) {
+    t.equal(err.toString(), 'failing the request');
+    t.end();
+  });
+
+});
+
+
 test('explicitly specifiying port 80 works', function(t) {
   var scope = nock('http://abc.portyyyy.com:80')
     .get('/pathhh')
